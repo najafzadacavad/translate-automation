@@ -10,7 +10,6 @@ body{
     font-family: Arial;
 }
 
-/* main box */
 .box{
     background-color:white;
     width:350px;
@@ -19,12 +18,10 @@ body{
     border:1px solid #ccc;
 }
 
-/* title */
 h2{
     text-align:center;
 }
 
-/* inputs */
 textarea, select{
     width:100%;
     margin-top:5px;
@@ -32,7 +29,6 @@ textarea, select{
     padding:5px;
 }
 
-/* button */
 button{
     width:100%;
     padding:8px;
@@ -41,22 +37,36 @@ button{
     border:none;
 }
 
-/* result */
 #result{
     color:blue;
     margin-top:10px;
     font-weight:bold;
 }
 
-/* small text */
 .info{
     font-size:12px;
     color:gray;
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    padding:10px;
+}
+
+.logo{
+    width:50px;
+    margin-right:10px;
 }
 </style>
 
 </head>
 <body>
+
+    <div class="header">
+    <img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" width="50px" class="logo">
+    <h2 class="title">Translator</h2>
+    </div>
 
 <hr>
 <div class="box">
@@ -86,12 +96,6 @@ button{
 <li>world</li>
 <li>computer</li>
 </ul>
-
-<p>
-<a href="https://translate.google.com/" target="_blank">Alternative translator</a>
-</p>
-
-<img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" width="150">
 
 </div>
 
