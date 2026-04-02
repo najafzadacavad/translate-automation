@@ -33,15 +33,7 @@ return "Translation not found";
 
 const translator = new Translator();
 
-const fakeAsync = () =>{
-return new Promise((resolve)=>{
-resolve();
-});
-}
-
-const translateText = async () =>{
-
-await fakeAsync();
+const translateText = () =>{
 
 let text = document.getElementById("inputText").value.toLowerCase();
 

@@ -2,53 +2,51 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Translation Automation</title>
+<title>Translator</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
 
+
 <header class="header">
     <img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" class="logo">
-    <h2>Translator</h2>
+    <h2 class="center-title">Translator</h2>
 </header>
 
-<hr>
 
-<main>
+<div class="menu">
+    <a href="main.html" class="active">Translate</a>
+    <a href="wordbase.html">Word Base</a>
+</div>
 
-<section class="box">
 
-<h3>Translation Automation</h3>
+<div class="container">
 
-<p class="info">Translate automation project</p>
+    
+    <div class="card">
+        <p class="info">Enter text</p>
+        <textarea id="inputText" placeholder="Type text..."></textarea>
+    </div>
 
-<form onsubmit="translateText(); return false;">
+    
+    <div class="card">
+        <p class="info">Result</p>
+        <div id="result" class="result-box"></div>
+    </div>
 
-<label>Enter text:</label>
-<textarea id="inputText"></textarea>
+</div>
 
-<label>Select language:</label>
-<select id="language">
-<option value="tr">Turkish</option>
-<option value="az">Azerbaijani</option>
-</select>
 
-<button type="submit">Translate</button>
+<div class="controls">
+    <select id="language">
+        <option value="tr">Turkish</option>
+        <option value="az">Azerbaijani</option>
+    </select>
 
-</form>
-
-<p>Result:</p>
-<div id="result"></div>
-
-<p class="info">
-<a href="wordbase.html">View Word Base</a>
-</p>
-
-</section>
-
-</main>
+    <button onclick="translateText()">Translate</button>
+</div>
 
 <script src="script.js"></script>
 
