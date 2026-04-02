@@ -1,26 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Simple Translation Automation</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
 <body>
 
-<div class="header">
-<img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" class="logo">
-<h2>Translator</h2>
-</div>
+<header class="header">
+    <img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" class="logo">
+    <h2>Translator</h2>
+</header>
 
 <hr>
 
-<div class="box">
+<main>
+
+<section class="box">
 
 <h3>Translation Automation</h3>
 
 <p class="info">Translate automation project</p>
+
+<form onsubmit="translateText(); return false;">
 
 <label>Enter text:</label>
 <textarea id="inputText"></textarea>
@@ -31,7 +26,9 @@
 <option value="az">Azerbaijani</option>
 </select>
 
-<button onclick="translateText()">Translate</button>
+<button type="submit">Translate</button>
+
+</form>
 
 <p>Result:</p>
 <div id="result"></div>
@@ -40,9 +37,8 @@
 <a href="wordbase.html">View Word Base</a>
 </p>
 
-</div>
+</section>
 
-<script src="script.js"></script>
+</main>
 
 </body>
-</html>
