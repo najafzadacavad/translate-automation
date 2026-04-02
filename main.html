@@ -4,71 +4,18 @@
 <meta charset="UTF-8">
 <title>Simple Translation Automation</title>
 
-<style>
-body{
-    background-color:#f2f2f2;
-    font-family: Arial;
-}
-
-.box{
-    background-color:white;
-    width:350px;
-    margin:50px auto;
-    padding:20px;
-    border:1px solid #ccc;
-}
-
-h2{
-    text-align:center;
-}
-
-textarea, select{
-    width:100%;
-    margin-top:5px;
-    margin-bottom:15px;
-    padding:5px;
-}
-
-button{
-    width:100%;
-    padding:8px;
-    background-color:blue;
-    color:white;
-    border:none;
-}
-
-#result{
-    color:blue;
-    margin-top:10px;
-    font-weight:bold;
-}
-
-.info{
-    font-size:12px;
-    color:gray;
-}
-
-.header{
-    display:flex;
-    align-items:center;
-    padding:10px;
-}
-
-.logo{
-    width:50px;
-    margin-right:10px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 <body>
 
-    <div class="header">
-    <img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" width="50px" class="logo">
-    <h2 class="title">Translator</h2>
-    </div>
+<div class="header">
+<img src="https://www.martindale-avvo.com/wp-content/uploads/2019/08/iStock-1088905934.jpg" class="logo">
+<h2>Translator</h2>
+</div>
 
 <hr>
+
 <div class="box">
 
 <h3>Translation Automation</h3>
@@ -90,73 +37,12 @@ button{
 <div id="result"></div>
 
 <p class="info">
-    <a href="wordbase.html">View Word Base</a>
+<a href="wordbase.html">View Word Base</a>
 </p>
 
 </div>
 
-<script>
-
-const jsonData = `{
-"hello":{"tr":"merhaba","az":"salam"},
-"world":{"tr":"dunya","az":"dunya"},
-"computer":{"tr":"bilgisayar","az":"komputer"},
-"student":{"tr":"ogrenci","az":"telebe"}
-}`;
-
-
-class Translator{
-
-constructor(){
-this.dictionary = JSON.parse(jsonData);
-}
-
-getTranslation(text,lang){
-
-if(this.dictionary[text]){
-
-const {tr,az} = this.dictionary[text];
-
-if(lang==="tr"){
-return tr;
-}else{
-return az;
-}
-
-}
-
-return "Translation not found";
-
-}
-
-}
-
-
-const translator = new Translator();
-
-
-const fakeAsync = () =>{
-return new Promise((resolve)=>{
-resolve();
-});
-}
-
-
-const translateText = async () =>{
-
-await fakeAsync();
-
-let text = document.getElementById("inputText").value.toLowerCase();
-
-let lang = document.getElementById("language").value;
-
-let result = translator.getTranslation(text,lang);
-
-document.getElementById("result").innerHTML = result;
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
