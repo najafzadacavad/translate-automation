@@ -1,8 +1,13 @@
-export default function Menu() {
+export default function Menu({ setPage }) {
   return (
     <div className="menu">
-      <a href="#">Translate</a>
-      <a href="#">Word Base</a>
+      <button onClick={() => setPage("translate")}>
+        Translate
+      </button>
+
+      <button onClick={() => setPage("wordbase")}>
+        Word Base
+      </button>
     </div>
   );
 }
