@@ -97,10 +97,13 @@ textarea{
 }
 
 .result-box{
-    height:120px;
+    min-height:120px;
     color:var(--main);
     font-weight:bold;
-    font-size:18px;
+    font-size:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .controls{
@@ -143,8 +146,9 @@ ul li{
 }
 
 .info{
-    float:left;
     color:gray;
+    margin-bottom:10px;
+    display:block;
 }
 
 @keyframes fade{
