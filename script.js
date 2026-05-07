@@ -1,3 +1,9 @@
+document.getElementById("header-component").innerHTML =
+HeaderComponent();
+
+document.getElementById("menu-component").innerHTML =
+MenuComponent();
+
 const jsonData = `{
 "hello":{"tr":"merhaba","az":"salam"},
 "world":{"tr":"dunya","az":"dunya"},
