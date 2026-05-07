@@ -41,8 +41,3 @@
 .menu a:hover{
     background:white;
 }
-
-.menu a.active{
-    background:white;
-    border:1px solid #ccc;
-}
