@@ -1,8 +1,12 @@
 .card{
     background:white;
+    width:420px;
+    min-height:260px;
     padding:20px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    display:flex;
+    flex-direction:column;
 }
 
 .info{
@@ -12,19 +16,21 @@
 
 textarea{
     width:100%;
-    height:120px;
+    height:180px;
     border:none;
     outline:none;
     resize:none;
-    font-size:16px;
+    font-size:18px;
+    background:transparent;
 }
 
 .result-box{
-    min-height:120px;
+    flex:1;
     display:flex;
-    align-items:center;
     justify-content:center;
-    font-size:22px;
-    color:#1a73e8;
+    align-items:center;
+    color:var(--main);
+    font-size:42px;
     font-weight:bold;
+    text-align:center;
 }
