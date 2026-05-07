@@ -107,7 +107,7 @@ return `
 <footer class="footer">
 
 <p>
-Simple Translator Project
+Translate solutions that help you get work done
 </p>
 
 </footer>

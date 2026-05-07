@@ -6,7 +6,7 @@ button{
     border-radius:20px;
     cursor:pointer;
     transition:0.3s;
-    margin-left:10px;
+    margin-top:25px;
 }
 
 button:hover{

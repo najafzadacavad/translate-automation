@@ -56,7 +56,7 @@ if(document.getElementById("alert-component")){
 
 document.getElementById("alert-component").innerHTML =
 AlertComponent({
-text:"Modern JavaScript Components"
+text:"↑ Click here to translate ↑"
 });
 
 }
