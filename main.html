@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>Translator</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/card.css">
+<link rel="stylesheet" href="css/button.css">
 
 </head>
-<body>
 
+<body>
 
 <div id="header-component"></div>
 
 <div id="menu-component"></div>
 
-
 <div class="container">
 
-    
-    <div class="card">
-        <p class="info">Enter text</p>
-        <textarea id="inputText" placeholder="Type text..."></textarea>
-    </div>
+<div id="translate-card"></div>
 
-    
-    <div class="card">
-        <p class="info">Result</p>
-        <div id="result" class="result-box"></div>
-    </div>
+<div id="result-card"></div>
 
 </div>
-
 
 <div class="controls">
-    <select id="language">
-        <option value="tr">Turkish</option>
-        <option value="az">Azerbaijani</option>
-    </select>
 
-    <button onclick="translateText()">Translate</button>
+<select id="language">
+
+<option value="tr">Turkish</option>
+
+<option value="az">Azerbaijani</option>
+
+</select>
+
+<div id="button-component"></div>
+
 </div>
 
-<script src="components.js"></script>
-<script src="script.js"></script>
+<div id="alert-component"></div>
+
+<div id="footer-component"></div>
+
+<script src="js/components.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
