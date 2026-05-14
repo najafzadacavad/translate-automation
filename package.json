@@ -13,7 +13,10 @@
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "react-select": "^5.10.2",
+    "react-simple-keyboard": "^3.8.206",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

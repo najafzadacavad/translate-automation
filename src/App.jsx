@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+
+import Tesseract from "tesseract.js";
+
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import TranslateContainer from "./components/TranslateContainer";
@@ -28,19 +31,30 @@ export default function App() {
     JSON.parse(localStorage.getItem("history")) || []
   );
 
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] =
+    useState(false);
 
-  const [voiceSpeed, setVoiceSpeed] = useState(
-    Number(localStorage.getItem("voiceSpeed")) || 1
-  );
+  const [voiceSpeed, setVoiceSpeed] =
+    useState(
+      Number(
+        localStorage.getItem("voiceSpeed")
+      ) || 1
+    );
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme
+    );
+
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem("voiceSpeed", voiceSpeed);
+    localStorage.setItem(
+      "voiceSpeed",
+      voiceSpeed
+    );
   }, [voiceSpeed]);
 
   useEffect(() => {
@@ -58,7 +72,9 @@ export default function App() {
         );
 
         const data = await res.json();
-        const translated = data[0][0][0];
+
+        const translated =
+          data[0][0][0];
 
         setResult(translated);
 
@@ -70,16 +86,25 @@ export default function App() {
           to: trgLang
         };
 
-        const updated = [historyItem, ...history].slice(0, 20);
+        const updatedHistory = [
+          historyItem,
+          ...history
+        ].slice(0, 20);
 
-        setHistory(updated);
-        localStorage.setItem("history", JSON.stringify(updated));
+        setHistory(updatedHistory);
+
+        localStorage.setItem(
+          "history",
+          JSON.stringify(updatedHistory)
+        );
+
       } catch (e) {
         console.error(e);
       }
     }, 600);
 
     return () => clearTimeout(timer);
+
   }, [text, srcLang, trgLang]);
 
   const onSpeak = (content, lang) => {
@@ -87,7 +112,10 @@ export default function App() {
 
     window.speechSynthesis.cancel();
 
-    const ut = new SpeechSynthesisUtterance(content);
+    const ut =
+      new SpeechSynthesisUtterance(
+        content
+      );
 
     ut.lang = lang;
     ut.rate = voiceSpeed;
@@ -100,62 +128,133 @@ export default function App() {
       window.SpeechRecognition ||
       window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) return;
+    if (!SpeechRecognition) {
+      alert(
+        "Speech Recognition not supported"
+      );
+      return;
+    }
 
-    const recognition = new SpeechRecognition();
+    const recognition =
+      new SpeechRecognition();
 
     recognition.lang =
-      srcLang === "auto" ? "en-US" : srcLang;
+      srcLang === "auto"
+        ? "en-US"
+        : srcLang;
 
     recognition.start();
 
-    recognition.onresult = (e) => {
-      setText(e.results[0][0].transcript);
+    recognition.onresult = (event) => {
+      const transcript =
+        event.results[0][0].transcript;
+
+      setText(transcript);
     };
+  };
+
+  const onImageUpload = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    try {
+      const {
+        data: { text }
+      } = await Tesseract.recognize(
+        file,
+        "eng"
+      );
+
+      setText(text);
+
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onSave = () => {
     if (!text || !result) return;
 
     const newSaved = [
-      { id: Date.now(), text, result },
+      {
+        id: Date.now(),
+        text,
+        result
+      },
       ...saved
     ];
 
     setSaved(newSaved);
-    localStorage.setItem("words", JSON.stringify(newSaved));
+
+    localStorage.setItem(
+      "words",
+      JSON.stringify(newSaved)
+    );
   };
 
   const onDelete = (id) => {
-    const filtered = saved.filter((i) => i.id !== id);
+    const filtered = saved.filter(
+      item => item.id !== id
+    );
 
     setSaved(filtered);
-    localStorage.setItem("words", JSON.stringify(filtered));
+
+    localStorage.setItem(
+      "words",
+      JSON.stringify(filtered)
+    );
   };
 
   const clearHistory = () => {
     setHistory([]);
-    localStorage.removeItem("history");
+
+    localStorage.removeItem(
+      "history"
+    );
+  };
+
+  const onSwap = () => {
+    if (srcLang === "auto") return;
+
+    const oldSrc = srcLang;
+    const oldTrg = trgLang;
+
+    const oldText = text;
+    const oldResult = result;
+
+    setSrcLang(oldTrg);
+    setTrgLang(oldSrc);
+
+    setText(oldResult);
+    setResult(oldText);
   };
 
   return (
     <div className="app-container">
-    <Header
-    theme={theme}
-    toggleTheme={() =>
-    setTheme(theme === "light" ? "dark" : "light")
-    }
-    onOpenSettings={() => setSettingsOpen(true)}
-/>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Nav page={page} setPage={setPage} />
+      <Header
+        theme={theme}
+        toggleTheme={() =>
+          setTheme(
+            theme === "light"
+              ? "dark"
+              : "light"
+          )
+        }
+        onOpenSettings={() =>
+          setSettingsOpen(true)
+        }
+      />
 
-        
-      </div>
+      <Nav
+        page={page}
+        setPage={setPage}
+      />
 
       <main className="main-content">
         {page === "translate" ? (
+
           <TranslateContainer
             srcLang={srcLang}
             setSrcLang={setSrcLang}
@@ -167,11 +266,27 @@ export default function App() {
             onSpeak={onSpeak}
             onSave={onSave}
             onVoice={startVoiceInput}
+            onSwap={onSwap}
+            onImageUpload={
+              onImageUpload
+            }
           />
+
         ) : page === "saved" ? (
-          <WordBase saved={saved} onDelete={onDelete} />
+
+          <WordBase
+            saved={saved}
+            onDelete={onDelete}
+          />
+
         ) : (
-          <History history={history} clearHistory={clearHistory} />
+
+          <History
+            history={history}
+            clearHistory={
+              clearHistory
+            }
+          />
         )}
       </main>
 
@@ -181,7 +296,9 @@ export default function App() {
         open={settingsOpen}
         setOpen={setSettingsOpen}
         voiceSpeed={voiceSpeed}
-        setVoiceSpeed={setVoiceSpeed}
+        setVoiceSpeed={
+          setVoiceSpeed
+        }
       />
     </div>
   );

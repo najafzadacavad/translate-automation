@@ -1,9 +1,14 @@
 import { motion } from "framer-motion";
+
+import {
+  ArrowLeftRight
+} from "lucide-react";
+
 import LangSelector from "./LangSelector";
 import InputBox from "./InputBox";
 import OutputBox from "./OutputBox";
 
-export default function TranslateContainer({ 
+export default function TranslateContainer({
   srcLang,
   setSrcLang,
   trgLang,
@@ -13,7 +18,9 @@ export default function TranslateContainer({
   result,
   onSpeak,
   onSave,
-  onVoice
+  onVoice,
+  onSwap,
+  onImageUpload
 }) {
   return (
     <motion.div
@@ -21,27 +28,55 @@ export default function TranslateContainer({
       animate={{ opacity: 1 }}
       className="translate-wrapper"
     >
-      <div className="selectors-row">
-        <LangSelector
-          label="From"
-          value={srcLang}
-          onChange={setSrcLang}
-        />
 
-        <LangSelector
-          label="To"
-          value={trgLang}
-          onChange={setTrgLang}
-        />
+      <div className="selectors-row">
+
+        <div className="selector-group">
+          <LangSelector
+            label="From"
+            value={srcLang}
+            onChange={setSrcLang}
+          />
+        </div>
+
+        <button
+          className={`swap-btn ${
+            srcLang === "auto"
+              ? "disabled"
+              : ""
+          }`}
+          onClick={onSwap}
+          disabled={
+            srcLang === "auto"
+          }
+        >
+          <ArrowLeftRight
+            size={18}
+            strokeWidth={1.8}
+          />
+        </button>
+
+        <div className="selector-group">
+          <LangSelector
+            label="To"
+            value={trgLang}
+            onChange={setTrgLang}
+          />
+        </div>
+
       </div>
 
       <div className="translate-grid">
+
         <InputBox
           text={text}
           setText={setText}
           lang={srcLang}
           onSpeak={onSpeak}
           onVoice={onVoice}
+          onImageUpload={
+            onImageUpload
+          }
         />
 
         <OutputBox
@@ -50,6 +85,7 @@ export default function TranslateContainer({
           onSpeak={onSpeak}
           onSave={onSave}
         />
+
       </div>
     </motion.div>
   );
