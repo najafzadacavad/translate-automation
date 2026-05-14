@@ -24,7 +24,7 @@ export default function InputBox({
 
       <div className="bottom-info">
         <span className="letter-count">
-          {text.length} characters
+          {text.length}
         </span>
 
         <div className="actions">
