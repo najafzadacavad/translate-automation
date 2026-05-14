@@ -107,8 +107,13 @@ export default function App() {
 
   }, [text, srcLang, trgLang]);
 
-  const onSpeak = (content, lang) => {
-    if (!content) return;
+const onSpeak = (content, lang) => {
+
+  if (!content) {
+
+    alert("Text is empty");
+
+  } else {
 
     window.speechSynthesis.cancel();
 
@@ -120,8 +125,11 @@ export default function App() {
     ut.lang = lang;
     ut.rate = voiceSpeed;
 
-    window.speechSynthesis.speak(ut);
-  };
+    window.speechSynthesis
+      .speak(ut);
+
+  }
+};
 
   const startVoiceInput = () => {
     const SpeechRecognition =
