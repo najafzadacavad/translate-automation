@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect
+} from "react";
 
 import Tesseract from "tesseract.js";
 
@@ -11,72 +14,134 @@ import Footer from "./components/Footer";
 import Settings from "./components/Settings";
 
 export default function App() {
-  const [page, setPage] = useState("translate");
 
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
-  );
+  const [page, setPage] =
+    useState("translate");
 
-  const [text, setText] = useState("");
-  const [result, setResult] = useState("");
+  const [theme, setTheme] =
+    useState(
+      localStorage.getItem("theme")
+      || "light"
+    );
 
-  const [srcLang, setSrcLang] = useState("auto");
-  const [trgLang, setTrgLang] = useState("tr");
+  const [text, setText] =
+    useState("");
 
-  const [saved, setSaved] = useState(
-    JSON.parse(localStorage.getItem("words")) || []
-  );
+  const [result, setResult] =
+    useState("");
 
-  const [history, setHistory] = useState(
-    JSON.parse(localStorage.getItem("history")) || []
-  );
+  const [srcLang, setSrcLang] =
+    useState("auto");
 
-  const [settingsOpen, setSettingsOpen] =
+  const [trgLang, setTrgLang] =
+    useState("tr");
+
+  const [saved, setSaved] =
+    useState(
+      JSON.parse(
+        localStorage.getItem("words")
+      ) || []
+    );
+
+  const [history, setHistory] =
+    useState(
+      JSON.parse(
+        localStorage.getItem("history")
+      ) || []
+    );
+
+  const [settingsOpen,
+    setSettingsOpen] =
     useState(false);
 
-  const [voiceSpeed, setVoiceSpeed] =
+  const [voiceSpeed,
+    setVoiceSpeed] =
     useState(
       Number(
-        localStorage.getItem("voiceSpeed")
+        localStorage.getItem(
+          "voiceSpeed"
+        )
       ) || 1
     );
 
+  const languageMap = {
+    en: "en",
+    tr: "tr",
+    az: "az",
+    ru: "ru",
+    de: "de",
+    fr: "fr",
+    es: "es",
+    it: "it",
+    pt: "pt",
+    ar: "ar",
+    zh: "zh-CN",
+    ja: "ja",
+    ko: "ko"
+  };
+
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
+
+    document.documentElement
+      .setAttribute(
+        "data-theme",
+        theme
+      );
+
+    localStorage.setItem(
+      "theme",
       theme
     );
 
-    localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
+
     localStorage.setItem(
       "voiceSpeed",
       voiceSpeed
     );
+
   }, [voiceSpeed]);
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
+
+    const timer =
+      setTimeout(async () => {
+
       if (!text.trim()) {
         setResult("");
         return;
       }
 
       try {
+
         const res = await fetch(
-          `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${trgLang}&dt=t&q=${encodeURIComponent(
-            text
-          )}`
+          `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${trgLang}&dt=t&q=${encodeURIComponent(text)}`
         );
 
-        const data = await res.json();
+        const data =
+          await res.json();
 
         const translated =
           data[0][0][0];
 
+        const detectedLang =
+          data[2];
+
         setResult(translated);
+
+        if (
+          srcLang === "auto" &&
+          detectedLang
+        ) {
+
+          setSrcLang(
+            languageMap[
+              detectedLang
+            ] || detectedLang
+          );
+        }
 
         const historyItem = {
           id: Date.now(),
@@ -91,55 +156,72 @@ export default function App() {
           ...history
         ].slice(0, 20);
 
-        setHistory(updatedHistory);
+        setHistory(
+          updatedHistory
+        );
 
         localStorage.setItem(
           "history",
-          JSON.stringify(updatedHistory)
+          JSON.stringify(
+            updatedHistory
+          )
         );
 
       } catch (e) {
         console.error(e);
       }
+
     }, 600);
 
-    return () => clearTimeout(timer);
+    return () =>
+      clearTimeout(timer);
 
-  }, [text, srcLang, trgLang]);
+  }, [
+    text,
+    srcLang,
+    trgLang
+  ]);
 
-const onSpeak = (content, lang) => {
+  const onSpeak = (
+    content,
+    lang
+  ) => {
 
-  if (!content) {
+    if (!content) {
 
-    alert("Text is empty");
+      alert("Text is empty");
 
-  } else {
+    } else {
 
-    window.speechSynthesis.cancel();
+      window.speechSynthesis
+        .cancel();
 
-    const ut =
-      new SpeechSynthesisUtterance(
-        content
-      );
+      const ut =
+        new SpeechSynthesisUtterance(
+          content
+        );
 
-    ut.lang = lang;
-    ut.rate = voiceSpeed;
+      ut.lang = lang;
+      ut.rate = voiceSpeed;
 
-    window.speechSynthesis
-      .speak(ut);
+      window.speechSynthesis
+        .speak(ut);
 
-  }
-};
+    }
+  };
 
   const startVoiceInput = () => {
+
     const SpeechRecognition =
       window.SpeechRecognition ||
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
+
       alert(
         "Speech Recognition not supported"
       );
+
       return;
     }
 
@@ -148,28 +230,36 @@ const onSpeak = (content, lang) => {
 
     recognition.lang =
       srcLang === "auto"
-        ? "en-US"
-        : srcLang;
+      ? "en-US"
+      : srcLang;
 
     recognition.start();
 
-    recognition.onresult = (event) => {
+    recognition.onresult =
+      (event) => {
+
       const transcript =
-        event.results[0][0].transcript;
+        event.results[0][0]
+        .transcript;
 
       setText(transcript);
     };
   };
 
-  const onImageUpload = async (e) => {
-    const file = e.target.files[0];
+  const onImageUpload =
+    async (e) => {
+
+    const file =
+      e.target.files[0];
 
     if (!file) return;
 
     try {
+
       const {
         data: { text }
-      } = await Tesseract.recognize(
+      } =
+      await Tesseract.recognize(
         file,
         "eng"
       );
@@ -182,7 +272,9 @@ const onSpeak = (content, lang) => {
   };
 
   const onSave = () => {
-    if (!text || !result) return;
+
+    if (!text || !result)
+      return;
 
     const newSaved = [
       {
@@ -202,9 +294,12 @@ const onSpeak = (content, lang) => {
   };
 
   const onDelete = (id) => {
-    const filtered = saved.filter(
-      item => item.id !== id
-    );
+
+    const filtered =
+      saved.filter(
+        item =>
+          item.id !== id
+      );
 
     setSaved(filtered);
 
@@ -215,6 +310,7 @@ const onSpeak = (content, lang) => {
   };
 
   const clearHistory = () => {
+
     setHistory([]);
 
     localStorage.removeItem(
@@ -223,7 +319,9 @@ const onSpeak = (content, lang) => {
   };
 
   const onSwap = () => {
-    if (srcLang === "auto") return;
+
+    if (srcLang === "auto")
+      return;
 
     const oldSrc = srcLang;
     const oldTrg = trgLang;
@@ -246,8 +344,8 @@ const onSpeak = (content, lang) => {
         toggleTheme={() =>
           setTheme(
             theme === "light"
-              ? "dark"
-              : "light"
+            ? "dark"
+            : "light"
           )
         }
         onOpenSettings={() =>
@@ -261,23 +359,35 @@ const onSpeak = (content, lang) => {
       />
 
       <main className="main-content">
+
         {page === "translate" ? (
 
           <TranslateContainer
+
             srcLang={srcLang}
             setSrcLang={setSrcLang}
+
             trgLang={trgLang}
             setTrgLang={setTrgLang}
+
             text={text}
             setText={setText}
+
             result={result}
+
             onSpeak={onSpeak}
             onSave={onSave}
-            onVoice={startVoiceInput}
+
+            onVoice={
+              startVoiceInput
+            }
+
             onSwap={onSwap}
+
             onImageUpload={
               onImageUpload
             }
+
           />
 
         ) : page === "saved" ? (
@@ -295,7 +405,9 @@ const onSpeak = (content, lang) => {
               clearHistory
             }
           />
+
         )}
+
       </main>
 
       <Footer />
@@ -308,6 +420,7 @@ const onSpeak = (content, lang) => {
           setVoiceSpeed
         }
       />
+
     </div>
   );
 }
