@@ -5,6 +5,9 @@ import React, {
 
 import Tesseract from "tesseract.js";
 
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import TranslateContainer from "./components/TranslateContainer";
