@@ -478,3 +478,26 @@ textarea::placeholder {
   font-size: 13px;
   color: var(--text-light);
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-btn {
+  height: 40px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.ai-btn.active {
+  background: var(--primary);
+  color: white;
+}

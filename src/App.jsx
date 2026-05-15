@@ -13,6 +13,10 @@ import History from "./components/History";
 import Footer from "./components/Footer";
 import Settings from "./components/Settings";
 
+const GEMINI_API_KEY =
+  import.meta.env
+  .VITE_GEMINI_API_KEY;
+
 export default function App() {
 
   const [page, setPage] =
@@ -35,6 +39,9 @@ export default function App() {
 
   const [trgLang, setTrgLang] =
     useState("tr");
+
+  const [aiMode, setAiMode] =
+    useState(false);
 
   const [saved, setSaved] =
     useState(
@@ -116,31 +123,80 @@ export default function App() {
 
       try {
 
-        const res = await fetch(
-          `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${trgLang}&dt=t&q=${encodeURIComponent(text)}`
-        );
+        let translated = "";
 
-        const data =
-          await res.json();
+        if (aiMode) {
 
-        const translated =
-          data[0][0][0];
+  const prompt = `
+Translate this text by understanding its context.
 
-        const detectedLang =
-          data[2];
+Text:
+"${text}"
 
-        setResult(translated);
+Target language:
+${trgLang}
 
-        if (
-          srcLang === "auto" &&
-          detectedLang
-        ) {
+Return ONLY translated text.
+`;
 
-          setSrcLang(
-            languageMap[
-              detectedLang
-            ] || detectedLang
+const geminiRes =
+  await fetch(
+    "/api/translate",
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+
+      body: JSON.stringify({
+        text,
+        target: trgLang
+      })
+    }
+  );
+
+const geminiData =
+  await geminiRes.json();
+
+console.log(geminiData);
+
+translated =
+  geminiData?.candidates?.[0]
+  ?.content?.parts?.[0]
+  ?.text || "";
+
+setResult(translated);
+
+} else {
+
+          const geminiRes = await fetch(
+  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
           );
+
+          const data =
+            await res.json();
+
+          translated =
+            data[0][0][0];
+
+          const detectedLang =
+            data[2];
+
+          setResult(translated);
+
+          if (
+            srcLang === "auto" &&
+            detectedLang
+          ) {
+
+            setSrcLang(
+              languageMap[
+                detectedLang
+              ] || detectedLang
+            );
+          }
         }
 
         const historyItem = {
@@ -168,8 +224,29 @@ export default function App() {
         );
 
       } catch (e) {
-        console.error(e);
-      }
+
+  console.error(e);
+
+  try {
+
+    const res = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${trgLang}&dt=t&q=${encodeURIComponent(text)}`
+    );
+
+    const data =
+      await res.json();
+
+    const translated =
+      data[0][0][0];
+
+    setResult(translated);
+
+  } catch (err) {
+
+    console.error(err);
+
+  }
+}
 
     }, 600);
 
@@ -179,7 +256,8 @@ export default function App() {
   }, [
     text,
     srcLang,
-    trgLang
+    trgLang,
+    aiMode
   ]);
 
   const onSpeak = (
@@ -351,6 +429,8 @@ export default function App() {
         onOpenSettings={() =>
           setSettingsOpen(true)
         }
+        aiMode={aiMode}
+        setAiMode={setAiMode}
       />
 
       <Nav

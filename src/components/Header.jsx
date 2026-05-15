@@ -1,26 +1,72 @@
-import { Languages, Moon, Sun, Settings } from "lucide-react";
+import {
+  Languages,
+  Moon,
+  Sun,
+  Settings
+} from "lucide-react";
 
-export default function Header({ theme, toggleTheme, onOpenSettings }) {
+export default function Header({
+  theme,
+  toggleTheme,
+  onOpenSettings,
+  aiMode,
+  setAiMode
+}) {
+
   return (
     <header className="header">
+
       <div className="logo-section">
-        <Languages size={28} color="var(--primary)" />
-        <h1 className="app-title">Translate</h1>
+
+        <Languages
+          size={28}
+          color="var(--primary)"
+        />
+
+        <h1 className="app-title">
+          Translate
+        </h1>
+
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <button className="btn-icon" onClick={onOpenSettings}>
-          <Settings size={20} strokeWidth={1.5} />
+      <div className="header-actions">
+
+        <button
+          className={`ai-btn ${
+            aiMode
+            ? "active"
+            : ""
+          }`}
+          onClick={() =>
+            setAiMode(!aiMode)
+          }
+        >
+          AI
         </button>
 
-        <button className="btn-icon" onClick={toggleTheme}>
-          {theme === "light" ? (
-            <Moon size={20} strokeWidth={1.5} />
+        <button
+          className="btn-icon"
+          onClick={onOpenSettings}
+        >
+          <Settings size={20} />
+        </button>
+
+        <button
+          className="btn-icon"
+          onClick={toggleTheme}
+        >
+
+          {theme === "light"
+          ? (
+            <Moon size={20} />
           ) : (
-            <Sun size={20} strokeWidth={1.5} />
+            <Sun size={20} />
           )}
+
         </button>
+
       </div>
+
     </header>
   );
 }
