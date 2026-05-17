@@ -8,9 +8,7 @@ import {
 export default function Header({
   theme,
   toggleTheme,
-  onOpenSettings,
-  aiMode,
-  setAiMode
+  onOpenSettings
 }) {
 
   return (
@@ -30,19 +28,6 @@ export default function Header({
       </div>
 
       <div className="header-actions">
-
-        <button
-          className={`ai-btn ${
-            aiMode
-            ? "active"
-            : ""
-          }`}
-          onClick={() =>
-            setAiMode(!aiMode)
-          }
-        >
-          AI
-        </button>
 
         <button
           className="btn-icon"
