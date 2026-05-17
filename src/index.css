@@ -478,9 +478,3 @@ textarea::placeholder {
   font-size: 13px;
   color: var(--text-light);
 }
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}

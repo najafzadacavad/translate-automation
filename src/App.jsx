@@ -36,6 +36,9 @@ export default function App() {
   const [trgLang, setTrgLang] =
     useState("tr");
 
+  const [tone, setTone] =
+    useState("casual");
+
   const [saved, setSaved] =
     useState(
       JSON.parse(
@@ -125,11 +128,43 @@ export default function App() {
         const data =
           await res.json();
 
-        const translated =
+        let translated =
           data[0][0][0];
 
         const detectedLang =
           data[2];
+
+        if (tone === "formal") {
+
+          translated =
+            translated
+              .replaceAll("hi", "hello")
+              .replaceAll("hey", "greetings");
+
+        }
+
+        if (tone === "friendly") {
+
+          translated =
+            translated + " 😊";
+
+        }
+
+        if (tone === "business") {
+
+          translated =
+            "Professional: " +
+            translated;
+
+        }
+
+        if (tone === "academic") {
+
+          translated =
+            "Academically: " +
+            translated;
+
+        }
 
         setResult(translated);
 
@@ -183,7 +218,8 @@ export default function App() {
   }, [
     text,
     srcLang,
-    trgLang
+    trgLang,
+    tone
   ]);
 
   const onSpeak = (
@@ -393,6 +429,9 @@ export default function App() {
             onImageUpload={
               onImageUpload
             }
+
+            tone={tone}
+            setTone={setTone}
 
           />
 
